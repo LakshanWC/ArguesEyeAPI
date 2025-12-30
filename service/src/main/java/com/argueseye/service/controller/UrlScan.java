@@ -1,6 +1,7 @@
 package com.argueseye.service.controller;
 
 
+import com.argueseye.service.DTO.UrlScanResponse;
 import com.argueseye.service.service.RateLimiterService;
 import com.argueseye.service.service.UrlScanService;
 import io.github.bucket4j.Bucket;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.List;
@@ -69,7 +71,17 @@ public class UrlScan {
         if(status){
             long tokens = rateLimiterService.getAvilableTokenes(deviceId);
 
-            return ResponseEntity.status(HttpStatus.OK).body("Request accepted " + "\n"+"Tokens left : "+tokens);
+            UrlScanResponse urlScanResponse = urlScanService.callApi(url).block();
+
+            return ResponseEntity.ok(
+                    Map.of(
+                            "message","Request Accepted",
+                            "Tokensleft",tokens,
+                            "scanResponse",urlScanResponse
+                    )
+            );
+
+
         }
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body("Rate Exceeded");
     }
