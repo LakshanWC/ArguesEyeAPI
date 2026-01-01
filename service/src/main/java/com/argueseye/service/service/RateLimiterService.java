@@ -22,7 +22,14 @@ public class RateLimiterService {
     private final Bucket globalBucket;
     private final LoadingCache<String,Bucket> bucketCache;
 
+
+    private final Bucket healthGlobalBucket = Bucket.builder()
+            .addLimit(Bandwidth.classic(1, Refill.greedy(1, Duration.ofSeconds(1))))
+            .build();
+
+
     private RateLimiterService(){
+
 
         Instant nextMidnightUtc = ZonedDateTime.now(ZoneOffset.UTC)
                 .truncatedTo(ChronoUnit.DAYS)
@@ -42,6 +49,7 @@ public class RateLimiterService {
         Bandwidth devicePreMinuteLimit = Bandwidth.classic(5,Refill.greedy(5,Duration.ofMinutes(5)));
         Bandwidth devicePreDayLimit = Bandwidth.classic(30,Refill.greedy(30,Duration.ofDays(1)));
 
+        //keep in cache
         bucketCache = Caffeine.newBuilder()
                 .expireAfterAccess(Duration.ofDays(1))
                 .maximumSize(50_000)
@@ -91,5 +99,9 @@ public class RateLimiterService {
         }
 
         return false;
+    }
+
+    public boolean allowHealthCheck() {
+        return healthGlobalBucket.tryConsume(1);
     }
 }

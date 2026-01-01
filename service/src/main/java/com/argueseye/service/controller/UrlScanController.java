@@ -27,16 +27,11 @@ public class UrlScanController {
 
     @GetMapping("/health")
     public ResponseEntity<String> isRunning(){
-        return new ResponseEntity<>("Running : true",HttpStatus.OK);
+        if (!rateLimiterService.allowHealthCheck()) {
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body("Rate Exceeded");
+        }
+        return ResponseEntity.ok("Running: true");
     }
-
-
-    //temperay testing endpoint
-    // provide all the tokens counts devices and there own respective tokens.
-    //TODO
-    // add token reset timers
-    // show how much time left for the next reset
-    // ...etc some other things
 
 
 
