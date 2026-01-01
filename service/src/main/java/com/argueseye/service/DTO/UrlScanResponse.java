@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UrlScanResponse {
-    String message;
-    String uuid;
+   public String message;
+   public String uuid;
     String result;
     String api;
     String visibility;
-    String url;
+   public String url;
 }

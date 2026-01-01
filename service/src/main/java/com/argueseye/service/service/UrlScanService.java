@@ -2,12 +2,16 @@ package com.argueseye.service.service;
 
 import com.argueseye.service.DTO.UrlScanResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.awt.image.DataBuffer;
 import java.net.http.HttpClient;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,9 +19,10 @@ import java.util.Map;
 @Service
 public class UrlScanService {
 
-    private final static String API_KEY = "";
-    private final static String URLSCAN_API_ENDPOINT = "https://urlscan.io/api/v1/scan/";
+    @Value("${URL_SCAN_API_KEY}")
+    private String API_KEY;
 
+    private final static String URLSCAN_API_ENDPOINT = "https://urlscan.io/api/v1/scan/";
     private final WebClient webClient;
 
     @Autowired
