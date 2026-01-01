@@ -4,23 +4,17 @@ package com.argueseye.service.controller;
 import com.argueseye.service.DTO.ScanResultDTO;
 import com.argueseye.service.DTO.UrlScanResponse;
 import com.argueseye.service.service.RateLimiterService;
-import com.argueseye.service.service.UrlScanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @ControllerAdvice
 @RestController
 @RequestMapping("urlscan")
 public class UrlScanController {
-
-    @Autowired
-    UrlScanService urlScanService;
 
     @Autowired
     RateLimiterService rateLimiterService;
