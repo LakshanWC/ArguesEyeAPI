@@ -32,4 +32,10 @@ The API exposes endpoints that allow clients to:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/arguesEye-api.git
+   git clone https://github.com/LakshanWC/ArguesEyeAPI.git
+
+2. Create a .env file or configure your environment variables for your API keys:
+
+```bash
+   URL_SCAN_API_KEY=your_urlscan_api_key_here
+   DEBUG_API_KEY=your_debug_api_key_here
