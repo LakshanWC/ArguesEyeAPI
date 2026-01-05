@@ -4,6 +4,7 @@ package com.argueseye.service.controller;
 import com.argueseye.service.DTO.ScanResultDTO;
 import com.argueseye.service.DTO.UrlScanResponse;
 import com.argueseye.service.service.RateLimiterService;
+import com.argueseye.service.service.UrlScanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,9 @@ public class UrlScanController {
 
     @Autowired
     RateLimiterService rateLimiterService;
+
+    @Autowired
+    UrlScanService urlScanService;
 
     @GetMapping("/health")
     public ResponseEntity<String> isRunning(){
@@ -36,9 +40,8 @@ public class UrlScanController {
         if(status){
             long tokens = rateLimiterService.getAvilableTokenes(deviceId);
 
-           // UrlScanResponse urlScanResponse = urlScanService.callApi(url).block();
+            UrlScanResponse urlScanResponse = urlScanService.callApi(url).block();
 
-            UrlScanResponse  urlScanResponse = new UrlScanResponse();
             ScanResultDTO scanResultDTO = ScanResultDTO.from(urlScanResponse,url);
 
             return ResponseEntity.ok(
