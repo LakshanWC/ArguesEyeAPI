@@ -39,3 +39,17 @@ The API exposes endpoints that allow clients to:
 ```bash
    URL_SCAN_API_KEY=your_urlscan_api_key_here
    DEBUG_API_KEY=your_debug_api_key_here
+
+Docker Deployment
+
+This project includes a Dockerfile located in the service folder, allowing you to build and run the API in a container.
+
+Build and run locally
+# Navigate to the service folder
+cd service
+
+# Build the Docker image
+docker build -t argueseye-api .
+
+# Run the container
+docker run -p 8088:8088 argueseye-api
