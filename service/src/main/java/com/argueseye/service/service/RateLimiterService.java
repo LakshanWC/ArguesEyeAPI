@@ -28,7 +28,7 @@ public class RateLimiterService {
             .build();
 
 
-    private RateLimiterService(){
+    public RateLimiterService(){
 
 
         Instant nextMidnightUtc = ZonedDateTime.now(ZoneOffset.UTC)
@@ -52,7 +52,7 @@ public class RateLimiterService {
         //keep in cache
         bucketCache = Caffeine.newBuilder()
                 .expireAfterAccess(Duration.ofDays(1))
-                .maximumSize(50_000)
+                .maximumSize(5_000)
                 .build(deviceId ->
                         Bucket.builder()
                                 .addLimit(devicePreMinuteLimit)
