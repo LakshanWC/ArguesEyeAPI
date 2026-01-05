@@ -36,13 +36,13 @@ The API exposes endpoints that allow clients to:
 
 2. Create a .env file or configure your environment variables for your API keys:
 
-```bash
+   ```bash
    URL_SCAN_API_KEY=your_urlscan_api_key_here
    DEBUG_API_KEY=your_debug_api_key_here
 
 Docker Deployment
 
-This project includes a Dockerfile located in the service folder, allowing you to build and run the API in a container.
+This project includes a Dockerfile located in the service folder, allowing the API to be built and deployed using Docker or any Docker-compatible hosting platform.
 
 Build and run locally
 # Navigate to the service folder
