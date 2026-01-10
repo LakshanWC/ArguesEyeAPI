@@ -1,0 +1,16 @@
+name: Keep Backend Alive
+
+on:
+  schedule:
+    # Run every 40 mins
+    - cron: "*/40 * * * *"
+  workflow_dispatch: 
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call hello endpoint
+        run: |
+          curl -X GET https://argueseyeapi.onrender.com/management/hello
