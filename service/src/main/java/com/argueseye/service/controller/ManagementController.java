@@ -1,5 +1,6 @@
 package com.argueseye.service.controller;
 
+import com.argueseye.service.service.ManagementService;
 import com.argueseye.service.service.RateLimiterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +24,7 @@ public class ManagementController {
     private String debugApiKey;
 
     @Autowired
-    RateLimiterService rateLimiterService;
+    ManagementService managementService;
 
     @GetMapping(value = "/debug")
     public ResponseEntity<?> getBucketDetails(@RequestHeader("My-Api-Key") String apiKey){
@@ -33,52 +34,13 @@ public class ManagementController {
             return ResponseEntity.status(401).body("Unauthorized");
         }
 
-        Map<String,Object> response = new HashMap<>();
-
-        //RateLimiter details
-        long globalTokens = rateLimiterService.getGlobalTokens();
-        List<String> devices = rateLimiterService.bucketList();
-
-        Map<String,Long> deviceTokenDetails = new HashMap<>();
-        for(int i = 0; i<devices.size();i++){
-            deviceTokenDetails.put(devices.get(i), rateLimiterService.getAvilableTokenes(devices.get(i)));
-        }
-
-        //memory details
-        Runtime runtime = Runtime.getRuntime();
-        long heapUsedMb = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
-        long heapMaxMb = runtime.maxMemory() / (1024 * 1024);
-
-        //cpu load details
-        OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
-        long totalPhysicalMemoryBytes = 0;
-        long freePhysicalMemoryBytes = 0;
-        double cpuLoadPercent = -1.0;
-
-        if (osBean instanceof com.sun.management.OperatingSystemMXBean sunOsBean) {
-            totalPhysicalMemoryBytes = sunOsBean.getTotalPhysicalMemorySize();
-            freePhysicalMemoryBytes = sunOsBean.getFreePhysicalMemorySize();
-            cpuLoadPercent = sunOsBean.getSystemCpuLoad() * 100;
-        }
-
-        String cpuLoadDisplay = cpuLoadPercent >= 0
-                ? String.format("%.2f%%", cpuLoadPercent)
-                : "N/A (unsupported on this JVM/OS)";
-
-        Map<String, Object> serverDetails = Map.of(
-                "heap-used-mb", heapUsedMb,
-                "heap-max-mb", heapMaxMb,
-                "system-total-ram-mb", totalPhysicalMemoryBytes,
-                "system-free-ram-mb", freePhysicalMemoryBytes,
-                "system-used-ram-mb", totalPhysicalMemoryBytes - freePhysicalMemoryBytes,
-                "cpu-load-percent", cpuLoadDisplay
-        );
+        return ResponseEntity.ok(managementService.getServerDetails());
+    }
 
 
-        response.put("global-tokens",globalTokens);
-        response.put("devices",deviceTokenDetails);
-        response.put("server-details",serverDetails);
-
-        return ResponseEntity.ok(response);
+    @GetMapping("/hello")
+    public String tempMethod() {
+        System.out.println("hello from server");
+        return "Hello";
     }
 }
