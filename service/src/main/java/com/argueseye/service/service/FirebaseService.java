@@ -1,7 +1,5 @@
 package com.argueseye.service.service;
 
-import com.google.cloud.firestore.Firestore;
-import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -11,6 +9,7 @@ import java.util.Map;
 @Service
 public class FirebaseService {
 
+    /*
     public Firestore getFireStore(){
         return FirestoreClient.getFirestore();
     }
@@ -20,4 +19,6 @@ public class FirebaseService {
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
         getFireStore().collection("server-status").document(timestamp).set(respond);
     }
+
+     */
 }
