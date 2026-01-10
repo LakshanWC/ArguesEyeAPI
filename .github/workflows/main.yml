@@ -13,4 +13,4 @@ jobs:
     steps:
       - name: Call hello endpoint
         run: |
-          curl -X GET https://argueseyeapi.onrender.com/management/hello
+          curl -f --max-time 20 -v https://argueseyeapi.onrender.com/management/hello
