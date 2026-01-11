@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("management")
+@RequestMapping("management/internal")
 public class ManagementController {
 
     @Value("${DEBUG_API_KEY}")
@@ -27,7 +27,7 @@ public class ManagementController {
     ManagementService managementService;
 
     @GetMapping(value = "/debug")
-    public ResponseEntity<?> getBucketDetails(@RequestHeader("My-Api-Key") String apiKey){
+    public ResponseEntity<?> getBucketDetails(@RequestHeader("Api-Key") String apiKey){
 
         //Security check
         if(!debugApiKey.equals(apiKey)){
@@ -37,10 +37,11 @@ public class ManagementController {
         return ResponseEntity.ok(managementService.getServerDetails());
     }
 
-
-    @GetMapping("/hello")
-    public String tempMethod() {
-        System.out.println("hello from server");
-        return "Hello";
+    @GetMapping("/alive")
+    public ResponseEntity<?> keepServerAlive(@RequestHeader("Api-Key") String apiKey) {
+        if(!debugApiKey.equals(apiKey)){
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+        return ResponseEntity.ok("Alive");
     }
 }
