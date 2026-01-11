@@ -3,7 +3,7 @@ name: Keep Backend Alive
 on:
   schedule:
 #     # Run every 40 mins
-    - cron: "*/30 * * * *"
+    - cron: "*/10 * * * *"
   workflow_dispatch: 
 
 jobs:
