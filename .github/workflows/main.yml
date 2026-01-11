@@ -2,15 +2,16 @@ name: Keep Backend Alive
 
 on:
   schedule:
-#     # Run every 40 mins
-    - cron: "*/10 * * * *"
-  workflow_dispatch: 
+    - cron: "*/10 * * * *"   # every 10 mins
+  workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Call hello endpoint
+      - name: Call alive endpoint
         run: |
-          curl -f --max-time 20 -v https://argueseyeapi.onrender.com/management/hello
+          curl -f --max-time 20 \
+               -H "Api-Key: ${{ secrets.DEBUG_API_KEY }}" \
+               https://argueseyeapi.onrender.com/management/internal/alive
